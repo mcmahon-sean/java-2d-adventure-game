@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Fireball;
 import object.OBJ_Key;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
@@ -59,6 +60,7 @@ public class Player extends Entity {
 		coin = 0;
 		currentWeapon = new OBJ_Sword_Normal(gp);
 		currentShield = new OBJ_Shield_Wood(gp);
+		projectile = new OBJ_Fireball(gp);
 		attack = getAttack(); // The total value is decided by str and weapon
 		defense = getDefense(); // The total value is decided by dex and shield
 	}
@@ -192,14 +194,31 @@ public class Player extends Entity {
 				standCounter = 0;
 			}
 		}
+		
+		if (gp.keyH.shotKeyPressed == true && projectile.alive == false && shotAvailableCounter == 30) {
+			
+			// SET DEFAULT COORDIANTES, DIRECTION, AND USER
+			projectile.set(worldX, worldY, direction, true, this);
+			
+			// ADD IT TO THE PROJECTILE ARRAY LIST
+			gp.projectileList.add(projectile);
+			
+			shotAvailableCounter = 0;
+			
+			gp.playSFX(10);
+		}
 
-		// tHIS ENEDS TO BE OUTSTIDE OF KEY IF STATEMENT
+		// THIS ENEDS TO BE OUTSTIDE OF KEY IF STATEMENT
 		if (invincible == true) {
 			invincibleCounter++;
 			if (invincibleCounter > 60) {
 				invincible = false;
 				invincibleCounter = 0;
 			}
+		}
+		
+		if (shotAvailableCounter < 30) {
+			shotAvailableCounter++;
 		}
 	}
 	
@@ -233,7 +252,7 @@ public class Player extends Entity {
 			
 			// Check monster collision with the updated worldX, worldY, and solidArea
 			int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-			damageMonster(monsterIndex);
+			damageMonster(monsterIndex, attack);
 			
 			// After checking collision, restore the original data
 			worldX = currentWorldX;
@@ -284,7 +303,7 @@ public class Player extends Entity {
 
 		if (i != 999) {
 
-			if (invincible == false) {
+			if (invincible == false && gp.monster[i].dying == false) {
 				
 				int damage = gp.monster[i].attack - defense;
 				if (damage < 0 ) {
@@ -300,7 +319,7 @@ public class Player extends Entity {
 		}
 	}
 	
-	public void damageMonster(int i) {
+	public void damageMonster(int i, int attack) {
 		
 		if (i != 999) {
 			
