@@ -77,12 +77,12 @@ public class MON_GreenSlime extends Entity {
 			
 		}
 		
-		int i = new Random().nextInt(100)+1;
-		if (i > 99 && projectile.alive == false && shotAvailableCounter == 30) {
-			projectile.set(worldX, worldY, direction, alive, this);
-			gp.projectileList.add(projectile);
-			shotAvailableCounter = 0;
-		}
+//		int i = new Random().nextInt(100)+1;
+//		if (i > 99 && projectile.alive == false && shotAvailableCounter == 30) {
+//			projectile.set(worldX, worldY, direction, alive, this);
+//			gp.projectileList.add(projectile);
+//			shotAvailableCounter = 0;
+//		}
 	}
 	
 	public void damageReaction() {
