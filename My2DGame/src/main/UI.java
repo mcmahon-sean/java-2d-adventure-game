@@ -288,7 +288,7 @@ public class UI {
 	public void drawInventoryScreen() {
 		
 		// FRAME
-		int frameX = gp.tileSize * 9;
+		int frameX = gp.tileSize * 13;
 		int frameY = gp.tileSize;
 		int frameWidth = gp.tileSize * 6;
 		int frameHeight = gp.tileSize * 5;
